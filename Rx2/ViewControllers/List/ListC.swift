@@ -1,6 +1,6 @@
 import UIKit
 
-final class LoginC: Coordinator {
+class ListC: Coordinator {
     var id: TimeInterval
     var navigationController: UINavigationController
     
@@ -20,21 +20,22 @@ final class LoginC: Coordinator {
     }
     
     func start() {
-        let vm = LoginVM()
+        let vm = ListVM()
         let c = self
-        let controller = LoginVC.self
-        let vc = LoginVC(viewModel: vm,
-                         coordinator: c,
-                         vc: controller)
+        let controller = ListVC.self
+        let vc = ListVC(viewModel: vm,
+                        coordinator: c,
+                        vc: controller)
         
-        navigationController.viewControllers = [vc]
+        navigationController.pushViewController(vc, animated: true)
     }
     
-    func goToList() {
-        let listC = ListC(navigationController: navigationController,
-                          parentCoordinator: self)
+    func goToDetail(_ user: User) {
+        let detailC = DetailC(navigationController: navigationController,
+                              parentCoordinator: self,
+                              user: user)
         
-        listC.start()
-        childCoordinators.append(listC)
+        detailC.start()
+        childCoordinators.append(detailC)
     }
 }

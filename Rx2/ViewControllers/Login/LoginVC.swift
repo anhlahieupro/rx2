@@ -5,7 +5,7 @@ final class LoginVC: ViewController<LoginVM, LoginC> {
     
     @IBOutlet weak var emailTF: UITextField!
     @IBOutlet weak var passwordTF: UITextField!
-    @IBOutlet weak var messageLabel: UILabel!    
+    @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var loginButton: UIButton!
     
     override func viewDidLoad() {
@@ -30,14 +30,21 @@ final class LoginVC: ViewController<LoginVM, LoginC> {
             .drive(messageLabel.rx.text)
             .disposed(by: disposeBag)
         
+        output.loginSuccess
+            .drive { [weak self] loginSuccess in
+                guard let self = self, loginSuccess else { return }
+                self.coordinator.goToList()
+            }
+            .disposed(by: disposeBag)
+        
         output.enableLogin
             .drive(loginButton.rx.isEnabled)
             .disposed(by: disposeBag)
     }
     
     override func initInput() -> LoginVM.Input {
-        return LoginVM.Input.init(email: emailTF.rx.text.orEmpty.asObservable(),
-                                  password: passwordTF.rx.text.orEmpty.asObservable(),
-                                  login: loginButton.rx.tap.asObservable())
+        return LoginVM.Input(email: emailTF.rx.text.orEmpty.asObservable(),
+                             password: passwordTF.rx.text.orEmpty.asObservable(),
+                             login: loginButton.rx.tap.asObservable())
     }
 }

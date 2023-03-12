@@ -29,7 +29,7 @@ struct Api {
                         single(.success(data))
                         
                     default:
-                        single(.failure(BaseError.init(code: code, response: data)))
+                        single(.failure(BaseError(code: code, response: data)))
                     }
                     
                 case let .failure(error):

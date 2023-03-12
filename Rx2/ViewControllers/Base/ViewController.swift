@@ -9,7 +9,14 @@ class ViewController<VM: ViewModel,  C: Coordinator>: UIViewController {
     
     let disposeBag = DisposeBag()
     
-    init(viewModel: VM, coordinator: C, vc: ViewController.Type) {
+    deinit {
+        coordinator?.parentCoordinator?.childCoordinators.removeAll(where: { $0.id == coordinator.id })
+    }
+    
+    init(viewModel: VM,
+         coordinator: C,
+         vc: ViewController.Type) {
+        
         self.viewModel = viewModel
         self.coordinator = coordinator
         

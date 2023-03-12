@@ -12,6 +12,7 @@ final class LoginVM: ViewModel {
     struct Output {
         let isLoading: Driver<Bool>
         let message: Driver<String>
+        let loginSuccess: Driver<Bool>
         let enableLogin: Driver<Bool>
     }
     
@@ -24,6 +25,8 @@ final class LoginVM: ViewModel {
         
         let activityIndicator = ActivityIndicator()
         
+        let loginSuccess: BehaviorSubject<Bool> = .init(value: false)
+        
         let message = input.login
             .withLatestFrom(emailAndPassword)
             .flatMap { email, password in
@@ -34,7 +37,12 @@ final class LoginVM: ViewModel {
                                    ResponseType: LoginResponse.self)
                 .trackActivity(activityIndicator)
                 .map { response in
-                    return response.token ?? response.error ?? "response"
+                    if let token = response.token, !token.isEmpty {
+                        loginSuccess.onNext(true)
+                        return "ok"
+                    }
+                    
+                    return response.error ?? "error"
                 }
                 .catch { error in
                     if let error = error as? BaseError {
@@ -47,6 +55,7 @@ final class LoginVM: ViewModel {
         
         return Output(isLoading: activityIndicator.asDriver(onErrorJustReturn: false),
                       message: message.asDriver(onErrorJustReturn: ""),
+                      loginSuccess: loginSuccess.asDriver(onErrorJustReturn: false),
                       enableLogin: enableLogin.asDriver(onErrorJustReturn: false))
     }
 }
