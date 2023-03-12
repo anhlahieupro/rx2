@@ -5,7 +5,7 @@ class ListC: Coordinator {
     var navigationController: UINavigationController
     
     var parentCoordinator: Coordinator?
-    var childCoordinators: [Coordinator] = []
+    // var childCoordinators: [Coordinator] = []
     
     deinit {
         print("")
@@ -36,6 +36,6 @@ class ListC: Coordinator {
                               user: user)
         
         detailC.start()
-        childCoordinators.append(detailC)
+        // childCoordinators.append(detailC)
     }
 }

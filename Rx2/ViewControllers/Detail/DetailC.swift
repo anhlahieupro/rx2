@@ -5,7 +5,7 @@ class DetailC: Coordinator {
     var navigationController: UINavigationController
     
     var parentCoordinator: Coordinator?
-    var childCoordinators: [Coordinator] = []
+    // var childCoordinators: [Coordinator] = []
     
     var user: User!
     

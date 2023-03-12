@@ -5,12 +5,12 @@ import RxCocoa
 class ViewController<VM: ViewModel,  C: Coordinator>: UIViewController {
     
     var viewModel: VM!
-    weak var coordinator: C!
+    var coordinator: C!
     
     let disposeBag = DisposeBag()
     
     deinit {
-        coordinator?.parentCoordinator?.childCoordinators.removeAll(where: { $0.id == coordinator.id })
+        // coordinator?.parentCoordinator?.childCoordinators.removeAll(where: { $0.id == coordinator.id })
     }
     
     init(viewModel: VM,

@@ -6,6 +6,10 @@ class DetailVC: ViewController<DetailVM, DetailC> {
     
     var user: User!
     
+    deinit {
+        print("")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
